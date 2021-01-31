@@ -23,17 +23,17 @@ class RunFragment : Fragment(R.layout.fragment_run), EasyPermissions.PermissionC
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requestPermission()
+        requestPermissions()
         fab.setOnClickListener {
             findNavController().navigate(R.id.action_runFragment_to_trackingFragment)
         }
     }
 
-    private fun requestPermission() {
-        if (TrackingUtility.hasLocationPermissions(requireContext())) {
+    private fun requestPermissions() {
+        if(TrackingUtility.hasLocationPermissions(requireContext())) {
             return
         }
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             EasyPermissions.requestPermissions(
                 this,
                 "You need to accept location permissions to use this app.",
@@ -51,19 +51,17 @@ class RunFragment : Fragment(R.layout.fragment_run), EasyPermissions.PermissionC
                 Manifest.permission.ACCESS_BACKGROUND_LOCATION
             )
         }
-
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
-        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+        if(EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
             AppSettingsDialog.Builder(this).build().show()
         } else {
-            requestPermission()
+            requestPermissions()
         }
     }
 
-    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
-    }
+    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {}
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
